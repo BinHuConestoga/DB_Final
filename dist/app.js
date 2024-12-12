@@ -17,7 +17,7 @@ const AppDataSource = require('./data-source').default;  // Ensure correct impor
 
 const app = (0, express_1.default)();
 
-// Function to check if the database is available
+// Function to check if the database is available 
 const waitForDatabase = async (retries = 5, delay = 5000) => {
   while (retries) {
     try {
