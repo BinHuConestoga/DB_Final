@@ -13,11 +13,12 @@ const shipment_routes_1 = __importDefault(require("./routes/shipment.routes"));
 const customer_routes_1 = __importDefault(require("./routes/customer.routes"));
 require("reflect-metadata");
 
-const AppDataSource = require('./data-source').default;  // Import your AppDataSource
+// Import AppDataSource and initialize the connection before app starts
+const AppDataSource = require('./data-source').default;
 
 const app = (0, express_1.default)();
 
-// Initialize database connection first
+// Initialize the database connection first
 AppDataSource.initialize()
   .then(() => {
     console.log("Database connected successfully!");
@@ -34,7 +35,7 @@ AppDataSource.initialize()
     app.use('/shipments', shipment_routes_1.default);
     app.use('/customers', customer_routes_1.default);
 
-    // Start the server after DB connection
+    // Start the server only after the DB connection
     app.listen(3000, () => {
       console.log('Server is running on http://localhost:3000');
     });
