@@ -13,8 +13,7 @@ const shipment_routes_1 = __importDefault(require("./routes/shipment.routes"));
 const customer_routes_1 = __importDefault(require("./routes/customer.routes"));
 require("reflect-metadata");
 
-// Import AppDataSource and initialize the connection before app starts
-const AppDataSource = require('./data-source').default;
+const AppDataSource = require('./data-source').default;  // Make sure the default export is correct
 
 const app = (0, express_1.default)();
 

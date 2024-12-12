@@ -1,17 +1,16 @@
 import { DataSource } from 'typeorm';
 import path from 'path';
 
-// In production, entities are located in the dist folder
 const isProduction = process.env.NODE_ENV === 'production';
 
 const AppDataSource = new DataSource({
   type: 'postgres',
-  host: process.env.DATABASE_HOST || 'db',
+  host: process.env.DATABASE_HOST || 'db',  // Make sure this matches your docker container name
   port: parseInt(process.env.DATABASE_PORT, 10) || 5432,
   username: process.env.DATABASE_USER || 'postgres',
   password: process.env.DATABASE_PASSWORD || 'password',
   database: process.env.DATABASE_NAME || 'RoadFreightTransportation',
-  synchronize: true,  // Caution with synchronize in production
+  synchronize: true,  // Set to false in production
   logging: true,
   entities: isProduction
     ? [
@@ -32,6 +31,8 @@ const AppDataSource = new DataSource({
         path.join(__dirname, 'src', 'entities', 'truck.entity.ts'),
         path.join(__dirname, 'src', 'entities', 'truck_trip.entity.ts'),
       ],
+  migrations: [],
+  subscribers: [],
 });
 
 export default AppDataSource;

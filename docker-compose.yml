@@ -1,23 +1,32 @@
 version: '3.8'
 services:
-  app:
-    build: .
-    ports:
-      - "3000:3000"
-    depends_on:
-      - db
-    environment:
-      DATABASE_HOST: db
-      DATABASE_PORT: 5432
-      DATABASE_USER: postgres
-      DATABASE_PASSWORD: password
-      DATABASE_NAME: RoadFreightTransportation
-
   db:
     image: postgres:13
+    container_name: db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
       POSTGRES_DB: RoadFreightTransportation
     ports:
       - "5432:5432"
+    networks:
+      - mynetwork
+  app:
+    build: .
+    container_name: app
+    environment:
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: password
+      DATABASE_NAME: RoadFreightTransportation
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    networks:
+      - mynetwork
+    command: ["npm", "start"]
+networks:
+  mynetwork:
+    driver: bridge
