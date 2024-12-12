@@ -1,11 +1,8 @@
 import { DataSource } from 'typeorm';
-import { Customer } from './entities/customer.entity';
-import { Employee } from './entities/employee.entity';
-import { MechanicRepair } from './entities/mechanic_repair.entity';
-import { MechanicSpecialty } from './entities/mechanic_specialty.entity';
-import { Shipment } from './entities/shipment.entity';
-import { Truck } from './entities/truck.entity';
-import { TruckTrip } from './entities/truck_trip.entity';
+import path from 'path';
+
+// In production, entities are located in the dist folder
+const isProduction = process.env.NODE_ENV === 'production';
 
 const AppDataSource = new DataSource({
   type: 'postgres',
@@ -16,15 +13,25 @@ const AppDataSource = new DataSource({
   database: process.env.DATABASE_NAME || 'RoadFreightTransportation',
   synchronize: true,  // Caution with synchronize in production
   logging: true,
-  entities: [
-    Customer,
-    Employee,
-    MechanicRepair,
-    MechanicSpecialty,
-    Shipment,
-    Truck,
-    TruckTrip,  // Add all your entities here
-  ],
+  entities: isProduction
+    ? [
+        path.join(__dirname, 'dist', 'entities', 'customer.entity.js'),
+        path.join(__dirname, 'dist', 'entities', 'employee.entity.js'),
+        path.join(__dirname, 'dist', 'entities', 'mechanic_repair.entity.js'),
+        path.join(__dirname, 'dist', 'entities', 'mechanic_specialty.entity.js'),
+        path.join(__dirname, 'dist', 'entities', 'shipment.entity.js'),
+        path.join(__dirname, 'dist', 'entities', 'truck.entity.js'),
+        path.join(__dirname, 'dist', 'entities', 'truck_trip.entity.js'),
+      ]
+    : [
+        path.join(__dirname, 'src', 'entities', 'customer.entity.ts'),
+        path.join(__dirname, 'src', 'entities', 'employee.entity.ts'),
+        path.join(__dirname, 'src', 'entities', 'mechanic_repair.entity.ts'),
+        path.join(__dirname, 'src', 'entities', 'mechanic_specialty.entity.ts'),
+        path.join(__dirname, 'src', 'entities', 'shipment.entity.ts'),
+        path.join(__dirname, 'src', 'entities', 'truck.entity.ts'),
+        path.join(__dirname, 'src', 'entities', 'truck_trip.entity.ts'),
+      ],
 });
 
 export default AppDataSource;
