@@ -1,40 +1,67 @@
 "use strict";
-import express from "express";
-import employeeRoutes from "./routes/employee.routes";
-import truckRoutes from "./routes/truck.routes";
-import mechanicSpecialtyRoutes from "./routes/mechanic_specialty.routes";
-import mechanicRepairRoutes from "./routes/mechanic_repair.routes";
-import truckTripRoutes from "./routes/truck_trip.routes";
-import shipmentRoutes from "./routes/shipment.routes";
-import customerRoutes from "./routes/customer.routes";
-import "reflect-metadata";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const employee_routes_1 = __importDefault(require("./routes/employee.routes"));
+const truck_routes_1 = __importDefault(require("./routes/truck.routes"));
+const mechanic_specialty_routes_1 = __importDefault(require("./routes/mechanic_specialty.routes"));
+const mechanic_repair_routes_1 = __importDefault(require("./routes/mechanic_repair.routes"));
+const truck_trip_routes_1 = __importDefault(require("./routes/truck_trip.routes"));
+const shipment_routes_1 = __importDefault(require("./routes/shipment.routes"));
+const customer_routes_1 = __importDefault(require("./routes/customer.routes"));
+require("reflect-metadata");
 
-// Import the DataSource (database configuration)
-import AppDataSource from './data-source';  // Corrected to use ESModule import
+const AppDataSource = require('./data-source').default;  // Ensure correct import
 
-const app = express();
-const port = process.env.PORT || 3000;
+const app = (0, express_1.default)();
 
-// Initialize database connection and then start the server
-AppDataSource.initialize()
+// Function to check if the database is available 
+const waitForDatabase = async (retries = 5, delay = 5000) => {
+  while (retries) {
+    try {
+      console.log('Initializing database connection...');
+      await AppDataSource.initialize(); // Try to initialize the DB connection
+      console.log("Database connected successfully!");
+      return;
+    } catch (error) {
+      console.error(`Database connection attempt failed: ${error.message}`);
+      retries -= 1;
+      if (!retries) throw new Error("Database connection failed after multiple attempts");
+      await new Promise(resolve => setTimeout(resolve, delay)); // Wait before retrying
+    }
+  }
+};
+
+waitForDatabase()
   .then(() => {
-    console.log('Data Source has been initialized!');
+    // Middleware
+    app.use(express_1.default.json());
 
-    // Register Routes only after the DB connection is successful
-    app.use('/api/employee', employeeRoutes);
-    app.use('/api/truck', truckRoutes);
-    app.use('/api/mechanic_specialty', mechanicSpecialtyRoutes);
-    app.use('/api/mechanic_repair', mechanicRepairRoutes);
-    app.use('/api/truck_trip', truckTripRoutes);
-    app.use('/api/shipment', shipmentRoutes);
-    app.use('/api/customer', customerRoutes);
+    // Routes
+    app.use('/employees', employee_routes_1.default);
+    app.use('/trucks', truck_routes_1.default);
+    app.use('/mechanic-specialties', mechanic_specialty_routes_1.default);
+    app.use('/mechanic-repairs', mechanic_repair_routes_1.default);
+    app.use('/truck-trips', truck_trip_routes_1.default);
+    app.use('/shipments', shipment_routes_1.default);
+    app.use('/customers', customer_routes_1.default);
 
-    // Start the server after DB connection is successful
-    app.listen(port, () => {
-      console.log(`Server is running on port ${port}`);
+    // Start the server only after the DB connection
+    app.listen(3000, () => {
+      console.log('Server is running on http://localhost:3000');
     });
   })
-  .catch((error) => {
-    console.log('Error during Data Source initialization:', error);
-    process.exit(1); // Exit if DB connection fails
+  .catch((err) => {
+    console.error("Database connection failed:", err);
+    process.exit(1);  // Exit the application if DB connection fails 
   });
+
+// Error Handling Middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send({ error: err.message || 'Something went wrong!' });
+});
+
+exports.default = app;
