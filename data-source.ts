@@ -4,17 +4,10 @@ require('dotenv').config();  // Ensure dotenv is loaded
 
 const isProduction = process.env.NODE_ENV === 'production';
 
-console.log({
-  DATABASE_HOST: process.env.DATABASE_HOST,
-  DATABASE_PORT: process.env.DATABASE_PORT,
-  DATABASE_USER: process.env.DATABASE_USER,
-  DATABASE_PASSWORD: process.env.DATABASE_PASSWORD,
-  DATABASE_NAME: process.env.DATABASE_NAME,
-});
-
 console.log("Initializing TypeORM DataSource...");
 
 const AppDataSource = new DataSource({
+  name: 'default',  // Explicitly set connection name
   type: 'postgres',
   host: process.env.DATABASE_HOST || 'db',
   port: parseInt(process.env.DATABASE_PORT, 10) || 5432,
@@ -47,6 +40,5 @@ const AppDataSource = new DataSource({
 });
 
 console.log("TypeORM DataSource initialized");
-
 
 export default AppDataSource;

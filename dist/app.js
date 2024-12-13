@@ -21,15 +21,18 @@ const app = (0, express_1.default)();
 const waitForDatabase = async (retries = 5, delay = 5000) => {
   while (retries) {
     try {
-      console.log('Initializing database connection...');
-      await AppDataSource.initialize(); // Try to initialize the DB connection
+      console.log('Attempting to initialize database connection...');
+      await AppDataSource.initialize();  // Try to initialize the DB connection
       console.log("Database connected successfully!");
       return;
     } catch (error) {
       console.error(`Database connection attempt failed: ${error.message}`);
       retries -= 1;
-      if (!retries) throw new Error("Database connection failed after multiple attempts");
-      await new Promise(resolve => setTimeout(resolve, delay)); // Wait before retrying
+      if (!retries) {
+        console.error("Max retries reached. Exiting...");
+        throw new Error("Database connection failed after multiple attempts");
+      }
+      await new Promise(resolve => setTimeout(resolve, delay));  // Wait before retrying
     }
   }
 };
