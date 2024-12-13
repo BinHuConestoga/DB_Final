@@ -11,6 +11,13 @@ services:
       - "5432:5432"
     networks:
       - mynetwork
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres", "-d", "RoadFreightTransportation"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
+
   app:
     build: .
     container_name: app
@@ -27,6 +34,7 @@ services:
     networks:
       - mynetwork
     command: ["npm", "start"]
+
 networks:
   mynetwork:
     driver: bridge
