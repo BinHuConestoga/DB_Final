@@ -4,6 +4,14 @@ require('dotenv').config();  // Ensure dotenv is loaded
 
 const isProduction = process.env.NODE_ENV === 'production';
 
+console.log({
+  DATABASE_HOST: process.env.DATABASE_HOST,
+  DATABASE_PORT: process.env.DATABASE_PORT,
+  DATABASE_USER: process.env.DATABASE_USER,
+  DATABASE_PASSWORD: process.env.DATABASE_PASSWORD,
+  DATABASE_NAME: process.env.DATABASE_NAME,
+});
+
 console.log("Initializing TypeORM DataSource...");
 
 const AppDataSource = new DataSource({
@@ -40,12 +48,5 @@ const AppDataSource = new DataSource({
 
 console.log("TypeORM DataSource initialized");
 
-console.log({
-  DATABASE_HOST: process.env.DATABASE_HOST,
-  DATABASE_PORT: process.env.DATABASE_PORT,
-  DATABASE_USER: process.env.DATABASE_USER,
-  DATABASE_PASSWORD: process.env.DATABASE_PASSWORD,
-  DATABASE_NAME: process.env.DATABASE_NAME,
-});
 
 export default AppDataSource;
