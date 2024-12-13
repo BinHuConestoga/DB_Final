@@ -13,12 +13,12 @@ const shipment_routes_1 = __importDefault(require("./routes/shipment.routes"));
 const customer_routes_1 = __importDefault(require("./routes/customer.routes"));
 require("reflect-metadata");
 
-const AppDataSource = require('./data-source').default;  // Ensure correct import
+const AppDataSource = require('./data-source').default;  // Correct import
 
 const app = (0, express_1.default)();
 
 // Function to check if the database is available 
-const waitForDatabase = async (retries = 5, delay = 5000) => {
+const waitForDatabase = async (retries = 10, delay = 5000) => {
   while (retries) {
     try {
       console.log('Attempting to initialize database connection...');
