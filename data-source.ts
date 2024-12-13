@@ -1,10 +1,14 @@
 import { DataSource } from 'typeorm';
+import { useContainer } from 'typeorm';  
+import { Container } from 'typedi'; 
 import path from 'path';
 require('dotenv').config();  // Ensure dotenv is loaded
 
 const isProduction = process.env.NODE_ENV === 'production';
 
 console.log("Initializing TypeORM DataSource...");
+
+useContainer(Container);
 
 const AppDataSource = new DataSource({
   type: 'postgres',
