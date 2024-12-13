@@ -1,5 +1,5 @@
 {
-  "description": "This project is a backend system for a road freight transportation company. It includes: - A PostgreSQL database with tables for trucks, employees, customers, shipments, and more. - CRUD APIs for interacting with the database. - Unit and integration tests. - Migration scripts to populate the database with initial data. - Docker configuration for containerized deployment.",
+  "description": "This project is a backend system for a road freight transportation company. It includes: -A PostgreSQL database with tables for trucks, employees, customers, shipments, and more. - CRUD APIs for interacting with the database. - Unit and integration tests. - Migration scripts to populate the database with initial data. - Docker configuration for containerized deployment.",
   "dependencies": {
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
