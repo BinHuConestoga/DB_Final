@@ -13,26 +13,27 @@ const shipment_routes_1 = __importDefault(require("./routes/shipment.routes"));
 const customer_routes_1 = __importDefault(require("./routes/customer.routes"));
 require("reflect-metadata");
 
-const AppDataSource = require('./data-source').default;  // Correct import
+const AppDataSource = require('./data-source').default;  // Ensure correct import
 
 const app = (0, express_1.default)();
 
 // Function to check if the database is available 
-const waitForDatabase = async (retries = 10, delay = 5000) => {
+const waitForDatabase = async (retries = 5, delay = 5000) => {
   while (retries) {
     try {
-      console.log('Attempting to initialize database connection...');
-      await AppDataSource.initialize();  // Try to initialize the DB connection
+      console.log('Attempting to connect to database...');
+      await AppDataSource.initialize(); // Try to initialize the DB connection
       console.log("Database connected successfully!");
       return;
     } catch (error) {
       console.error(`Database connection attempt failed: ${error.message}`);
       retries -= 1;
       if (!retries) {
-        console.error("Max retries reached. Exiting...");
-        throw new Error("Database connection failed after multiple attempts");
+        console.error("Database connection failed after multiple attempts");
+        throw new Error("Database connection failed");
       }
-      await new Promise(resolve => setTimeout(resolve, delay));  // Wait before retrying
+      console.log(`Retrying in ${delay / 1000}s...`);
+      await new Promise(resolve => setTimeout(resolve, delay)); // Wait before retrying
     }
   }
 };

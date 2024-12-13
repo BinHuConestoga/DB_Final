@@ -6,8 +6,14 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 console.log("Initializing TypeORM DataSource...");
 
+// Log database connection parameters for debugging
+console.log('DATABASE_HOST:', process.env.DATABASE_HOST);
+console.log('DATABASE_PORT:', process.env.DATABASE_PORT);
+console.log('DATABASE_USER:', process.env.DATABASE_USER);
+console.log('DATABASE_PASSWORD:', process.env.DATABASE_PASSWORD);
+console.log('DATABASE_NAME:', process.env.DATABASE_NAME);
+
 const AppDataSource = new DataSource({
-  name: 'default',  // Explicitly set connection name
   type: 'postgres',
   host: process.env.DATABASE_HOST || 'db',
   port: parseInt(process.env.DATABASE_PORT, 10) || 5432,
