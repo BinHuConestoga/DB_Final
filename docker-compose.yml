@@ -15,8 +15,8 @@ services:
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "postgres", "-d", "RoadFreightTransportation"]
       interval: 10s
-      retries: 5
-      start_period: 30s
+      retries: 10  # Increased retries for better DB readiness check
+      start_period: 60s  # Increased start period to allow more time for DB initialization
       timeout: 10s
 
   app:

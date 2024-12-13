@@ -45,6 +45,9 @@ const AppDataSource = new DataSource({
   subscribers: [],
 });
 
+// Log options for debugging
+console.log("AppDataSource options:", AppDataSource.options);
+
 console.log("TypeORM DataSource initialized");
 
 export default AppDataSource;

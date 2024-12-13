@@ -1,44 +1,40 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
-const employee_routes_1 = __importDefault(require("./routes/employee.routes"));
-const truck_routes_1 = __importDefault(require("./routes/truck.routes"));
-const mechanic_specialty_routes_1 = __importDefault(require("./routes/mechanic_specialty.routes"));
-const mechanic_repair_routes_1 = __importDefault(require("./routes/mechanic_repair.routes"));
-const truck_trip_routes_1 = __importDefault(require("./routes/truck_trip.routes"));
-const shipment_routes_1 = __importDefault(require("./routes/shipment.routes"));
-const customer_routes_1 = __importDefault(require("./routes/customer.routes"));
-require("reflect-metadata");
+import express from "express";
+import employeeRoutes from "./routes/employee.routes";
+import truckRoutes from "./routes/truck.routes";
+import mechanicSpecialtyRoutes from "./routes/mechanic_specialty.routes";
+import mechanicRepairRoutes from "./routes/mechanic_repair.routes";
+import truckTripRoutes from "./routes/truck_trip.routes";
+import shipmentRoutes from "./routes/shipment.routes";
+import customerRoutes from "./routes/customer.routes";
+import "reflect-metadata";
 
 // Import the DataSource (database configuration)
-const { AppDataSource } = require('./data-source'); // Update if needed to import from your source file
+import AppDataSource from './data-source';  // Corrected to use ESModule import
 
-const app = (0, express_1.default)();
+const app = express();
 const port = process.env.PORT || 3000;
 
 // Initialize database connection and then start the server
 AppDataSource.initialize()
-    .then(() => {
-        console.log('Data Source has been initialized!');
+  .then(() => {
+    console.log('Data Source has been initialized!');
 
-        // Register Routes only after the DB connection is successful
-        app.use('/api/employee', employee_routes_1.default);
-        app.use('/api/truck', truck_routes_1.default);
-        app.use('/api/mechanic_specialty', mechanic_specialty_routes_1.default);
-        app.use('/api/mechanic_repair', mechanic_repair_routes_1.default);
-        app.use('/api/truck_trip', truck_trip_routes_1.default);
-        app.use('/api/shipment', shipment_routes_1.default);
-        app.use('/api/customer', customer_routes_1.default);
+    // Register Routes only after the DB connection is successful
+    app.use('/api/employee', employeeRoutes);
+    app.use('/api/truck', truckRoutes);
+    app.use('/api/mechanic_specialty', mechanicSpecialtyRoutes);
+    app.use('/api/mechanic_repair', mechanicRepairRoutes);
+    app.use('/api/truck_trip', truckTripRoutes);
+    app.use('/api/shipment', shipmentRoutes);
+    app.use('/api/customer', customerRoutes);
 
-        // Start the server after DB connection is successful
-        app.listen(port, () => {
-            console.log(`Server is running on port ${port}`);
-        });
-    })
-    .catch((error) => {
-        console.log('Error during Data Source initialization:', error);
-        process.exit(1); // Exit if DB connection fails
+    // Start the server after DB connection is successful
+    app.listen(port, () => {
+      console.log(`Server is running on port ${port}`);
     });
+  })
+  .catch((error) => {
+    console.log('Error during Data Source initialization:', error);
+    process.exit(1); // Exit if DB connection fails
+  });
