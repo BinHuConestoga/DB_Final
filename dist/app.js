@@ -11,11 +11,33 @@ const mechanic_repair_routes_1 = __importDefault(require("./routes/mechanic_repa
 const truck_trip_routes_1 = __importDefault(require("./routes/truck_trip.routes"));
 const shipment_routes_1 = __importDefault(require("./routes/shipment.routes"));
 const customer_routes_1 = __importDefault(require("./routes/customer.routes"));
+const { DataSource } = require("typeorm");  // Import TypeORM's DataSource
 require("reflect-metadata");
 
-const AppDataSource = require('./data-source').default;  // Ensure correct import
-
 const app = (0, express_1.default)();
+
+// Database connection configuration
+const AppDataSource = new DataSource({
+  type: 'postgres',
+  host: 'db', // Assuming 'db' is the host from your Docker setup
+  port: 5432,
+  username: 'postgres',
+  password: 'password',
+  database: 'RoadFreightTransportation',  // Your database name
+  synchronize: true,  // Set to false in production for safety
+  logging: true,
+  entities: [
+    __dirname + '/entities/customer.entity.js',
+    __dirname + '/entities/employee.entity.js',
+    __dirname + '/entities/mechanic_repair.entity.js',
+    __dirname + '/entities/mechanic_specialty.entity.js',
+    __dirname + '/entities/shipment.entity.js',
+    __dirname + '/entities/truck.entity.js',
+    __dirname + '/entities/truck_trip.entity.js'
+  ],
+  migrations: [],
+  subscribers: [],
+});
 
 // Function to check if the database is available 
 const waitForDatabase = async (retries = 5, delay = 5000) => {
