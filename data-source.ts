@@ -7,9 +7,8 @@ const isProduction = process.env.NODE_ENV === 'production';
 console.log("Initializing TypeORM DataSource...");
 
 const AppDataSource = new DataSource({
-  name: 'customConnection',  // Explicitly naming the connection
   type: 'postgres',
-  host: process.env.DATABASE_HOST || 'db',  // Using the db service from docker-compose
+  host: process.env.DATABASE_HOST || 'db',
   port: parseInt(process.env.DATABASE_PORT, 10) || 5432,
   username: process.env.DATABASE_USER || 'postgres',
   password: process.env.DATABASE_PASSWORD || 'password',

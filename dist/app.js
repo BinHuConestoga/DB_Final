@@ -13,7 +13,6 @@ const shipment_routes_1 = __importDefault(require("./routes/shipment.routes"));
 const customer_routes_1 = __importDefault(require("./routes/customer.routes"));
 require("reflect-metadata");
 
-// Correctly import the custom named connection from data-source.ts
 const AppDataSource = require('./data-source').default;  // Ensure correct import
 
 const app = (0, express_1.default)();

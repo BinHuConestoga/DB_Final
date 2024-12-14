@@ -5,7 +5,7 @@ const mechanic_specialty_service_1 = require("../services/mechanic_specialty.ser
 const typeorm_1 = require("typeorm");
 const mechanic_specialty_entity_1 = require("../entities/mechanic_specialty.entity");
 const router = (0, express_1.Router)();
-const specialtyService = new mechanic_specialty_service_1.MechanicSpecialtyService((0, typeorm_1.getRepository)(mechanic_specialty_entity_1.MechanicSpecialty, 'customConnection'));
+const specialtyService = new mechanic_specialty_service_1.MechanicSpecialtyService((0, typeorm_1.getRepository)(mechanic_specialty_entity_1.MechanicSpecialty));
 router.post('/', async (req, res, next) => {
     try {
         const specialty = await specialtyService.create(req.body);

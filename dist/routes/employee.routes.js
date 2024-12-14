@@ -5,7 +5,7 @@ const employee_service_1 = require("../services/employee.service");
 const typeorm_1 = require("typeorm");
 const employee_entity_1 = require("../entities/employee.entity");
 const router = (0, express_1.Router)();
-const employeeService = new employee_service_1.EmployeeService((0, typeorm_1.getRepository)(employee_entity_1.Employee, 'customConnection'));
+const employeeService = new employee_service_1.EmployeeService((0, typeorm_1.getRepository)(employee_entity_1.Employee));
 router.post('/', async (req, res, next) => {
     try {
         const employee = await employeeService.create(req.body);
