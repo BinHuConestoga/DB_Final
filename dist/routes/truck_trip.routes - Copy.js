@@ -5,7 +5,7 @@ const truck_trip_service_1 = require("../services/truck_trip.service");
 const typeorm_1 = require("typeorm");
 const truck_trip_entity_1 = require("../entities/truck_trip.entity");
 const router = (0, express_1.Router)();
-const truckTripService = new truck_trip_service_1.TruckTripService((0, typeorm_1.getRepository)(truck_trip_entity_1.TruckTrip, 'customConnection'));
+const truckTripService = new truck_trip_service_1.TruckTripService((0, typeorm_1.getRepository)(truck_trip_entity_1.TruckTrip));
 router.post('/', async (req, res, next) => {
     try {
         const trip = await truckTripService.create(req.body);
